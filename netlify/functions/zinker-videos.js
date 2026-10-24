@@ -1,6 +1,7 @@
 // Zinker's World: Netlify YouTube feed function (diagnostic update).
 // No API key required. Shorts classification by duration is approximate.
 const CHANNEL_URL = 'https://www.youtube.com/@ZinkerRoblox';
+const CHANNEL_ID = 'UC760tlxWm16y_0U-INl6ORQ';
 const HEADERS = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'Accept-Language': 'en-US,en;q=0.9' };
 const reply = (statusCode, data) => ({ statusCode, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=120, s-maxage=300' }, body: JSON.stringify(data) });
 async function get(url, stage) {
@@ -18,8 +19,7 @@ function findChannelId(html) {
 exports.handler = async () => {
   try {
     console.log('[Zinker TV] Starting YouTube channel lookup');
-    const page=await get(CHANNEL_URL,'channel page');
-    const channelId=findChannelId(page);
+const channelId = CHANNEL_ID;
     if(!channelId) throw new Error('channel lookup: channel ID not found in YouTube HTML');
     console.log('[Zinker TV] Channel ID resolved; requesting RSS feed');
     const xml=await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(channelId)}`,'RSS feed');
